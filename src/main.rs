@@ -1,7 +1,8 @@
 //! Pong Tutorial 1
 
+mod components;
+mod systems;
 mod snake_game;
-mod snake;
 
 use snake_game::SnakeGame;
 
@@ -28,7 +29,8 @@ fn main() -> amethyst::Result<()> {
                 )
                 // RenderFlat2D plugin is used to render entities with a `SpriteRender` component.
                 .with_plugin(RenderFlat2D::default()),
-        )?;
+        )?
+        .with(systems::MovementSystem, "movement_system", &[]);
 
     let assets_dir = app_root.join("assets");
     let mut game = Application::new(assets_dir, SnakeGame, game_data)?;

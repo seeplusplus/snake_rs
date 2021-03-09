@@ -1,10 +1,7 @@
-pub struct Pip {
-
-}
+pub struct Pip;
 
 impl Component for Pip {
     type Storage = DenseVecStorage<Self>;
-
 }
 
 #[cfg(test)]

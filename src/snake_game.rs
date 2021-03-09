@@ -1,10 +1,17 @@
+use amethyst::{
+    assets::{AssetStorage, Loader, Handle}, 
+    core::transform::Transform, 
+    prelude::*, 
+    renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture, formats::texture}
+};
 
-use amethyst::{assets::{AssetStorage, Loader, Handle}, core::transform::Transform, ecs::{Component, DenseVecStorage, world}, prelude::*, renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture, formats::texture}};
+use crate::components::Snake;
+use crate::components::Movement;
+use crate::components::Location;
 
-use crate::snake::Snake;
 
-pub const ARENA_HEIGHT: f32 = 100.0;
-pub const ARENA_WIDTH: f32 = 100.0;
+pub const ARENA_HEIGHT: f32 = 300.0;
+pub const ARENA_WIDTH: f32 = 300.0;
 
 pub struct SnakeGame;
 
@@ -34,17 +41,20 @@ fn initialize_camera(world: &mut World) {
 }
 
 fn initialize_snake(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
-    let mut snake_transform = Transform::default();
-    
     let sprite_render = SpriteRender::new(sprite_sheet_handle, 0);
-
+    
+    let mut snake_transform = Transform::default();
     snake_transform.set_translation_xyz(ARENA_WIDTH / 2.0, ARENA_HEIGHT / 2.0, 0.0);
+    
+    let movement_component = Movement::new(); 
+    let location_component = Location::Free { x: 5, y: 5};
 
     world
         .create_entity()
         .with(sprite_render)
-        .with(Snake::new())
         .with(snake_transform)
+        .with(movement_component)
+        .with(location_component)
         .build();
 }
 
